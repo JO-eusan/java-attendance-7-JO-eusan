@@ -8,9 +8,7 @@ import java.util.List;
 import java.util.Locale;
 
 import attendance.model.AttendanceManager;
-import attendance.model.Penalty;
 import attendance.model.StatusManager;
-import attendance.model.StatusRecord;
 import attendance.view.InputView;
 import attendance.view.OutputView;
 import camp.nextstep.edu.missionutils.DateTimes;
