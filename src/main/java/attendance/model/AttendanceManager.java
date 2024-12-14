@@ -21,7 +21,7 @@ public class AttendanceManager {
 
 	public void addRecord(String name, LocalDateTime date) {
 		List<LocalDateTime> tmp = new ArrayList<>();
-		if(records.containsKey(name)) {
+		if (records.containsKey(name)) {
 			tmp = records.get(name);
 		}
 		tmp.add(date);
@@ -30,8 +30,8 @@ public class AttendanceManager {
 
 	public void modifyRecord(String name, LocalDateTime modifiedDate) {
 		List<LocalDateTime> recordsOfCrew = records.get(name);
-		for(LocalDateTime localDateTime : recordsOfCrew) {
-			if(localDateTime.getDayOfMonth() == modifiedDate.getDayOfMonth()) {
+		for (LocalDateTime localDateTime : recordsOfCrew) {
+			if (localDateTime.getDayOfMonth() == modifiedDate.getDayOfMonth()) {
 				recordsOfCrew.remove(localDateTime);
 				pastRecords.put(name, localDateTime);
 				break;
@@ -46,19 +46,19 @@ public class AttendanceManager {
 	}
 
 	public String getState(String dayOfWeek, int hour, int minute) {
-		if(dayOfWeek.equals("월요일")) {
-			if((hour == 13 && minute <= 5) || hour < 13) {
+		if (dayOfWeek.equals("월요일")) {
+			if ((hour == 13 && minute <= 5) || hour < 13) {
 				return "출석";
 			}
-			if(hour == 13 &&( 5 < minute && minute < 30)) {
+			if (hour == 13 && (5 < minute && minute < 30)) {
 				return "지각";
 			}
 			return "결석";
 		}
-		if((hour == 10 && minute <= 5) || hour < 10) {
+		if ((hour == 10 && minute <= 5) || hour < 10) {
 			return "출석";
 		}
-		if(hour == 10 &&( 5 < minute && minute < 30)) {
+		if (hour == 10 && (5 < minute && minute < 30)) {
 			return "지각";
 		}
 		return "결석";

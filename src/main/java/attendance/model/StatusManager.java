@@ -19,8 +19,8 @@ public class StatusManager {
 	}
 
 	public StatusRecord findByName(String name) {
-		for(StatusRecord record : records) {
-			if(record.getName().equals(name)) {
+		for (StatusRecord record : records) {
+			if (record.getName().equals(name)) {
 				return record;
 			}
 		}
@@ -29,7 +29,7 @@ public class StatusManager {
 
 	private List<StatusRecord> createRecords(AttendanceManager attendanceManager, LocalDateTime currentTime) {
 		List<StatusRecord> result = new ArrayList<>();
-		for(String name : attendanceManager.getKeys()) {
+		for (String name : attendanceManager.getKeys()) {
 			result.add(checkRecord(attendanceManager, name, currentTime));
 		}
 		return result;
@@ -42,17 +42,17 @@ public class StatusManager {
 		int latency = 0;
 		int absence = 0;
 
-		while(dateCounter.getDayOfMonth() < currentTime.getDayOfMonth()) {
+		while (dateCounter.getDayOfMonth() < currentTime.getDayOfMonth()) {
 			String dayOfWeek = dateCounter.getDayOfWeek().getDisplayName(TextStyle.FULL, Locale.KOREAN);
-			if(!dayOfWeek.equals("토요일") && !dayOfWeek.equals("일요일")) {
+			if (!dayOfWeek.equals("토요일") && !dayOfWeek.equals("일요일")) {
 				String currentStatus = checkRecord(attendanceManager, allRecords, dateCounter);
-				if(currentStatus.equals("출석")) {
+				if (currentStatus.equals("출석")) {
 					attendance++;
 				}
-				if(currentStatus.equals("지각")) {
+				if (currentStatus.equals("지각")) {
 					latency++;
 				}
-				if(currentStatus.equals("결석")) {
+				if (currentStatus.equals("결석")) {
 					absence++;
 				}
 			}
@@ -62,8 +62,8 @@ public class StatusManager {
 	}
 
 	private String checkRecord(AttendanceManager attendanceManager, List<LocalDateTime> allRecords, LocalDate current) {
-		for(LocalDateTime record : allRecords) {
-			if(record.toLocalDate().isEqual(current)) {
+		for (LocalDateTime record : allRecords) {
+			if (record.toLocalDate().isEqual(current)) {
 				String dayOfWeek = record.getDayOfWeek().getDisplayName(TextStyle.FULL, Locale.KOREAN);
 				return attendanceManager.getState(dayOfWeek, record.getHour(), record.getMinute());
 			}

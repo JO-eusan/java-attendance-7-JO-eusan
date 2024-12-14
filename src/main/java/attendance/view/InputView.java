@@ -29,7 +29,8 @@ public class InputView {
 	public String readFunction(LocalDateTime currentTime) {
 		System.out.println();
 		System.out.println(String.format(SELECT_FUNCTION_MESSAGE,
-			currentTime.getMonthValue(), currentTime.getDayOfMonth(), currentTime.getDayOfWeek().getDisplayName(TextStyle.FULL, Locale.KOREAN)));
+			currentTime.getMonthValue(), currentTime.getDayOfMonth(),
+			currentTime.getDayOfWeek().getDisplayName(TextStyle.FULL, Locale.KOREAN)));
 		System.out.println(FUNCTION_1);
 		System.out.println(FUNCTION_2);
 		System.out.println(FUNCTION_3);
@@ -83,20 +84,23 @@ public class InputView {
 	}
 
 	private void validateFunction(String input) {
-		if(!input.equals("1") && !input.equals("2") && !input.equals("3") && !input.equals("4") && !input.equals("Q")) {
+		if (!input.equals("1") && !input.equals("2")
+			&& !input.equals("3") && !input.equals("4") && !input.equals("Q")) {
 			throw new IllegalArgumentException(ERROR_PREFIX + "잘못된 형식을 입력하였습니다.");
 		}
 	}
 
 	private void validateWeekend(LocalDateTime currentTime, String input) {
 		String dayOfWeek = currentTime.getDayOfWeek().getDisplayName(TextStyle.FULL, Locale.KOREAN);
-		if(input.equals("1") && (dayOfWeek.equals("토요일") || dayOfWeek.equals("일요일"))) {
-			throw new IllegalArgumentException(ERROR_PREFIX + String.format(WEEKEND_ERROR_MESSAGE, currentTime.getMonthValue(), currentTime.getDayOfMonth(),dayOfWeek));
+		if (input.equals("1") && (dayOfWeek.equals("토요일") || dayOfWeek.equals("일요일"))) {
+			throw new IllegalArgumentException(
+				ERROR_PREFIX + String.format(WEEKEND_ERROR_MESSAGE, currentTime.getMonthValue(),
+					currentTime.getDayOfMonth(), dayOfWeek));
 		}
 	}
 
 	private void validateNickName(AttendanceManager attendanceManager, String name) {
-		if(!attendanceManager.isContain(name)) {
+		if (!attendanceManager.isContain(name)) {
 			throw new IllegalArgumentException(ERROR_PREFIX + NICKNAME_ERROR_MESSAGE);
 		}
 
@@ -113,7 +117,7 @@ public class InputView {
 			throw new IllegalArgumentException(ERROR_PREFIX + TIME_ERROR_MESSAGE);
 		}
 
-		if(hour < 0 || hour > 24 || minute < 0 || minute > 59) {
+		if (hour < 0 || hour > 24 || minute < 0 || minute > 59) {
 			throw new IllegalArgumentException(ERROR_PREFIX + TIME_ERROR_MESSAGE);
 		}
 	}
@@ -125,7 +129,7 @@ public class InputView {
 			throw new IllegalArgumentException(ERROR_PREFIX + DAY_ERROR_MESSAGE);
 		}
 		int day = Integer.parseInt(input);
-		if(day < 1 || day > 31) {
+		if (day < 1 || day > 31) {
 			throw new IllegalArgumentException(ERROR_PREFIX + DAY_ERROR_MESSAGE);
 		}
 	}

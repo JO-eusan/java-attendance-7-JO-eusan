@@ -21,12 +21,11 @@ public class OutputView {
 	private static final String PENALTY_RESULT_MESSAGE = "제적 위험자 조회 결과";
 	private static final String PENALTY_CREW_FORMAT = "- %s: 결석 %d회, 지각 %d회 (%s)";
 
-
 	public void printFileErrorMessage(FileNotFoundException e) {
 		System.out.println(e.getMessage());
 	}
 
-	public void printAttendanceRecord(AttendanceManager attendanceManager,LocalDateTime dateTime) {
+	public void printAttendanceRecord(AttendanceManager attendanceManager, LocalDateTime dateTime) {
 		String dayOfWeek = dateTime.getDayOfWeek().getDisplayName(TextStyle.FULL, Locale.KOREAN);
 		String status = attendanceManager.getState(dayOfWeek, dateTime.getHour(), dateTime.getMinute());
 		System.out.println(String.format(DATETIME_RECORD_MESSAGE,
@@ -50,7 +49,8 @@ public class OutputView {
 		System.out.print(" -> ");
 
 		String modifiedDayOfWeek = modifiedDate.getDayOfWeek().getDisplayName(TextStyle.FULL, Locale.KOREAN);
-		String modifiedStatus = attendanceManager.getState(modifiedDayOfWeek, modifiedDate.getHour(), modifiedDate.getMinute());
+		String modifiedStatus = attendanceManager.getState(modifiedDayOfWeek, modifiedDate.getHour(),
+			modifiedDate.getMinute());
 		System.out.print(String.format(DATETIME_MODIFIED_RECORD_MESSAGE
 			, modifiedDate.getHour(), modifiedDate.getMinute(), modifiedStatus));
 		System.out.println(" 수정 완료!");
@@ -62,7 +62,7 @@ public class OutputView {
 		System.out.println(String.format(LATENCY_MESSAGE, record.getLatency()));
 		System.out.println(String.format(ABSENCE_MESSAGE, record.getAbsence()));
 		System.out.println();
-		if(Penalty.checkPenalty(record).equals("")) {
+		if (Penalty.checkPenalty(record).equals("")) {
 			return;
 		}
 		System.out.println(Penalty.checkPenalty(record) + "입니다.");
@@ -71,9 +71,11 @@ public class OutputView {
 	public void printPenaltyCrew(StatusManager statusManager) {
 		System.out.println();
 		System.out.println(PENALTY_RESULT_MESSAGE);
-		for(StatusRecord record : statusManager.getRecords()) {
-			if(!Penalty.checkPenalty(record).equals("")) {
-				System.out.println(String.format(PENALTY_CREW_FORMAT, record.getName(), record.getAbsence(), record.getLatency(), Penalty.checkPenalty(record)));
+		for (StatusRecord record : statusManager.getRecords()) {
+			if (!Penalty.checkPenalty(record).equals("")) {
+				System.out.println(
+					String.format(PENALTY_CREW_FORMAT, record.getName(), record.getAbsence(), record.getLatency(),
+						Penalty.checkPenalty(record)));
 			}
 		}
 	}

@@ -16,11 +16,11 @@ public enum Penalty {
 	public static String checkPenalty(StatusRecord statusRecord) {
 		int latency = statusRecord.getLatency();
 		int absence = statusRecord.getAbsence();
-		absence += latency/3;
+		absence += latency / 3;
 
 		String result = "";
-		for(Penalty penalty : values()) {
-			if(penalty.absence <= absence) {
+		for (Penalty penalty : values()) {
+			if (penalty.absence <= absence) {
 				result = penalty.name;
 			}
 		}

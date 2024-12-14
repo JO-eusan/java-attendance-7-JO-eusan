@@ -28,10 +28,10 @@ public class AttendanceController {
 	}
 
 	public void startFunction() {
-		while(true) {
+		while (true) {
 			LocalDateTime currentTime = DateTimes.now();
 			String function = selectFunction(currentTime);
-			if(function.equals("Q")) {
+			if (function.equals("Q")) {
 				break;
 			}
 			executeFunction(currentTime, Integer.parseInt(function));
@@ -44,17 +44,17 @@ public class AttendanceController {
 	}
 
 	private void executeFunction(LocalDateTime currentTime, int functionNumber) {
-		if(functionNumber == 1) {
+		if (functionNumber == 1) {
 			attend(currentTime);
 		}
-		if(functionNumber == 2) {
+		if (functionNumber == 2) {
 			retouchAttendance(currentTime);
 		}
-		if(functionNumber == 3) {
+		if (functionNumber == 3) {
 			this.statusManager = new StatusManager(attendanceManager, currentTime);
 			checkRecord(currentTime);
 		}
-		if(functionNumber == 4) {
+		if (functionNumber == 4) {
 			this.statusManager = new StatusManager(attendanceManager, currentTime);
 			checkRiskCrews();
 		}
@@ -89,9 +89,9 @@ public class AttendanceController {
 		List<LocalDateTime> allRecords = attendanceManager.getAllRecord(nickname);
 		LocalDate dateCounter = LocalDate.of(currentTime.getYear(), currentTime.getMonth(), 1);
 
-		while(dateCounter.getDayOfMonth() < currentTime.getDayOfMonth()) {
+		while (dateCounter.getDayOfMonth() < currentTime.getDayOfMonth()) {
 			String dayOfWeek = dateCounter.getDayOfWeek().getDisplayName(TextStyle.FULL, Locale.KOREAN);
-			if(!dayOfWeek.equals("토요일") && !dayOfWeek.equals("일요일")) {
+			if (!dayOfWeek.equals("토요일") && !dayOfWeek.equals("일요일")) {
 				checkRecord(allRecords, dateCounter);
 			}
 			dateCounter = LocalDate.of(currentTime.getYear(), currentTime.getMonth(), dateCounter.getDayOfMonth() + 1);
@@ -100,8 +100,8 @@ public class AttendanceController {
 	}
 
 	private void checkRecord(List<LocalDateTime> allRecords, LocalDate current) {
-		for(LocalDateTime record : allRecords) {
-			if(record.toLocalDate().isEqual(current)) {
+		for (LocalDateTime record : allRecords) {
+			if (record.toLocalDate().isEqual(current)) {
 				outputView.printAttendanceRecord(attendanceManager, record);
 				return;
 			}
