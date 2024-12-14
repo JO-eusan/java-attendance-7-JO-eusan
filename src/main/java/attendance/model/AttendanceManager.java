@@ -20,4 +20,27 @@ public class AttendanceManager {
 		tmp.add(date);
 		records.put(name, tmp);
 	}
+
+	public boolean isContain(String name) {
+		return records.containsKey(name);
+	}
+
+	public String getState(String dayOfWeek, int hour, int minute) {
+		if(dayOfWeek.equals("월요일")) {
+			if((hour == 13 && minute <= 5) || hour < 13) {
+				return "출석";
+			}
+			if(hour == 13 &&( 5 < minute && minute < 30)) {
+				return "지각";
+			}
+			return "결석";
+		}
+		if((hour == 10 && minute <= 5) || hour < 10) {
+			return "출석";
+		}
+		if(hour == 10 &&( 5 < minute && minute < 30)) {
+			return "지각";
+		}
+		return "결석";
+	}
 }

@@ -1,6 +1,9 @@
 package attendance.controller;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.time.format.TextStyle;
+import java.util.Locale;
 
 import attendance.model.AttendanceManager;
 import attendance.view.InputView;
@@ -25,7 +28,7 @@ public class AttendanceController {
 			if(function.equals("Q")) {
 				break;
 			}
-			executeFunction(Integer.parseInt(function));
+			executeFunction(currentTime, Integer.parseInt(function));
 		}
 	}
 
@@ -40,9 +43,9 @@ public class AttendanceController {
 		return "";
 	}
 
-	private void executeFunction(int functionNumber) {
+	private void executeFunction(LocalDateTime currentTime, int functionNumber) {
 		if(functionNumber == 1) {
-			attend();
+			attend(currentTime);
 		}
 		if(functionNumber == 2) {
 			retouchAttendance();
@@ -55,8 +58,36 @@ public class AttendanceController {
 		}
 	}
 
-	private void attend() {
+	private void attend(LocalDateTime currentTime) {
+		String nickname = enterName();
 
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+		String date = currentTime.format(formatter);
+		formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+		LocalDateTime dateTime = LocalDateTime.parse(date + " " + enterTime(), formatter);
+
+		attendanceManager.addRecord(nickname, dateTime);
+		outputView.printAttendanceRecord(attendanceManager, dateTime);
+	}
+
+	private String enterName() {
+		try {
+			return inputView.readNickName(attendanceManager);
+		} catch (IllegalArgumentException e) {
+			outputView.printErrorMessage(e);
+			enterName();
+		}
+		return "";
+	}
+
+	private String enterTime() {
+		try {
+			return inputView.readTime();
+		} catch (IllegalArgumentException e) {
+			outputView.printErrorMessage(e);
+			enterTime();
+		}
+		return "";
 	}
 
 	private void retouchAttendance() {
