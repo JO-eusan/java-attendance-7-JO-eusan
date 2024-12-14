@@ -14,6 +14,10 @@ public class StatusManager {
 		this.records = createRecords(attendanceManager, currentTime);
 	}
 
+	public List<StatusRecord> getRecords() {
+		return records;
+	}
+
 	public StatusRecord findByName(String name) {
 		for(StatusRecord record : records) {
 			if(record.getName().equals(name)) {

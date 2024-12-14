@@ -110,7 +110,7 @@ public class AttendanceController {
 	}
 
 	private void checkRiskCrews() {
-
+		outputView.printPenaltyCrew(statusManager);
 	}
 
 	private String enterRetryName() {

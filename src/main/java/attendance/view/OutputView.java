@@ -8,6 +8,7 @@ import java.util.Locale;
 
 import attendance.model.AttendanceManager;
 import attendance.model.Penalty;
+import attendance.model.StatusManager;
 import attendance.model.StatusRecord;
 
 public class OutputView {
@@ -17,6 +18,9 @@ public class OutputView {
 	private static final String ATTENDANCE_MESSAGE = "출석: %d회";
 	private static final String LATENCY_MESSAGE = "지각: %d회";
 	private static final String ABSENCE_MESSAGE = "결석: %d회";
+	private static final String PENALTY_RESULT_MESSAGE = "제적 위험자 조회 결과";
+	private static final String PENALTY_CREW_FORMAT = "- %s: 결석 %d회, 지각 %d회 (%s)";
+
 
 	public void printFileErrorMessage(FileNotFoundException e) {
 		System.out.println(e.getMessage());
@@ -62,6 +66,16 @@ public class OutputView {
 			return;
 		}
 		System.out.println(Penalty.checkPenalty(record) + "입니다.");
+	}
+
+	public void printPenaltyCrew(StatusManager statusManager) {
+		System.out.println();
+		System.out.println(PENALTY_RESULT_MESSAGE);
+		for(StatusRecord record : statusManager.getRecords()) {
+			if(!Penalty.checkPenalty(record).equals("")) {
+				System.out.println(String.format(PENALTY_CREW_FORMAT, record.getName(), record.getAbsence(), record.getLatency(), Penalty.checkPenalty(record)));
+			}
+		}
 	}
 
 }
