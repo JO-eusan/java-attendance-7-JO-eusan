@@ -89,7 +89,7 @@ public class AttendanceController {
 		List<LocalDateTime> allRecords = attendanceManager.getAllRecord(nickname);
 		LocalDate dateCounter = LocalDate.of(currentTime.getYear(), currentTime.getMonth(), 1);
 
-		while(dateCounter.getDayOfMonth() < currentTime.getDayOfMonth() - 1) {
+		while(dateCounter.getDayOfMonth() < currentTime.getDayOfMonth()) {
 			String dayOfWeek = dateCounter.getDayOfWeek().getDisplayName(TextStyle.FULL, Locale.KOREAN);
 			if(!dayOfWeek.equals("토요일") && !dayOfWeek.equals("일요일")) {
 				checkRecord(allRecords, dateCounter);

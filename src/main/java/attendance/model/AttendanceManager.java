@@ -34,6 +34,7 @@ public class AttendanceManager {
 			if(localDateTime.getDayOfMonth() == modifiedDate.getDayOfMonth()) {
 				recordsOfCrew.remove(localDateTime);
 				pastRecords.put(name, localDateTime);
+				break;
 			}
 		}
 		recordsOfCrew.add(modifiedDate);

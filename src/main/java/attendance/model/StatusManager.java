@@ -38,7 +38,7 @@ public class StatusManager {
 		int latency = 0;
 		int absence = 0;
 
-		while(dateCounter.getDayOfMonth() < currentTime.getDayOfMonth() - 1) {
+		while(dateCounter.getDayOfMonth() < currentTime.getDayOfMonth()) {
 			String dayOfWeek = dateCounter.getDayOfWeek().getDisplayName(TextStyle.FULL, Locale.KOREAN);
 			if(!dayOfWeek.equals("토요일") && !dayOfWeek.equals("일요일")) {
 				String currentStatus = checkRecord(attendanceManager, allRecords, dateCounter);

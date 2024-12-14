@@ -20,7 +20,7 @@ public enum Penalty {
 
 		String result = "";
 		for(Penalty penalty : values()) {
-			if(penalty.absence < absence) {
+			if(penalty.absence <= absence) {
 				result = penalty.name;
 			}
 		}
