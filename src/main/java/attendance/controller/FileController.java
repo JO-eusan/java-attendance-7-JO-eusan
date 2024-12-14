@@ -44,7 +44,7 @@ public class FileController {
 
 			DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
 			LocalDateTime dateTime = LocalDateTime.parse(attr[1], formatter);
-			System.out.println(name + dateTime);
+
 			attendanceManager.addRecord(name, dateTime);
 		}
 	}

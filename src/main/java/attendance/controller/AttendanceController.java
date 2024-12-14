@@ -1,8 +1,11 @@
 package attendance.controller;
 
+import java.time.LocalDateTime;
+
 import attendance.model.AttendanceManager;
 import attendance.view.InputView;
 import attendance.view.OutputView;
+import camp.nextstep.edu.missionutils.DateTimes;
 
 public class AttendanceController {
 	private InputView inputView;
@@ -17,35 +20,55 @@ public class AttendanceController {
 
 	public void startFunction() {
 		while(true) {
-			String function = selectFunction();
+			LocalDateTime currentTime = DateTimes.now();
+			String function = selectFunction(currentTime);
 			if(function.equals("Q")) {
 				break;
 			}
-			//executeFunction(Integer.parseInt(function));
+			executeFunction(Integer.parseInt(function));
 		}
 	}
 
-	private String selectFunction() {
+	private String selectFunction(LocalDateTime currentTime) {
 		try {
-			String function = inputView.readFunction();
+			String function = inputView.readFunction(currentTime);
 			return function;
 		} catch(IllegalArgumentException e) {
 			outputView.printErrorMessage(e);
-			selectFunction();
+			selectFunction(currentTime);
 		}
 		return "";
 	}
 
-	// private void executeFunction(int functionNumber) {
-	// 	if(functionNumber == 1) {
-	// 		pairMatching();
-	// 	}
-	// 	if(functionNumber == 2) {
-	// 		pairCheck();
-	// 	}
-	// 	if(functionNumber == 3) {
-	// 		pairReset();
-	// 	}
-	// }
+	private void executeFunction(int functionNumber) {
+		if(functionNumber == 1) {
+			attend();
+		}
+		if(functionNumber == 2) {
+			retouchAttendance();
+		}
+		if(functionNumber == 3) {
+			checkRecord();
+		}
+		if(functionNumber == 4) {
+			checkRiskCrews();
+		}
+	}
+
+	private void attend() {
+
+	}
+
+	private void retouchAttendance() {
+
+	}
+
+	private void checkRecord() {
+
+	}
+
+	private void checkRiskCrews() {
+
+	}
 
 }
