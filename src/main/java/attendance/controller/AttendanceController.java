@@ -48,7 +48,7 @@ public class AttendanceController {
 			attend(currentTime);
 		}
 		if(functionNumber == 2) {
-			retouchAttendance();
+			retouchAttendance(currentTime);
 		}
 		if(functionNumber == 3) {
 			checkRecord();
@@ -90,8 +90,46 @@ public class AttendanceController {
 		return "";
 	}
 
-	private void retouchAttendance() {
+	private void retouchAttendance(LocalDateTime currentTime) {
+		String name = enterRetryName();
+		int day = Integer.parseInt(enterRetryDay());
+		String[] times = enterRetryTime().split(":");
+		int hour = Integer.parseInt(times[0]);
+		int minute = Integer.parseInt(times[1]);
 
+		LocalDateTime date = LocalDateTime.of(currentTime.getYear(), currentTime.getMonth(), day, hour, minute);
+		attendanceManager.modifyRecord(name, date);
+		outputView.printModifyRecord(name, date, attendanceManager);
+	}
+
+	private String enterRetryName() {
+		try {
+			return inputView.readRetryName(attendanceManager);
+		} catch (IllegalArgumentException e) {
+			outputView.printErrorMessage(e);
+			enterRetryName();
+		}
+		return "";
+	}
+
+	private String enterRetryDay() {
+		try {
+			return inputView.readRetryDay();
+		} catch (IllegalArgumentException e) {
+			outputView.printErrorMessage(e);
+			enterTime();
+		}
+		return "";
+	}
+
+	private String enterRetryTime() {
+		try {
+			return inputView.readRetryTime();
+		} catch (IllegalArgumentException e) {
+			outputView.printErrorMessage(e);
+			enterRetryTime();
+		}
+		return "";
 	}
 
 	private void checkRecord() {

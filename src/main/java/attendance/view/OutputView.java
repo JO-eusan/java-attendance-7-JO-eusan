@@ -28,4 +28,22 @@ public class OutputView {
 			, dateTime.getHour(), dateTime.getMinute(), status));
 	}
 
+	public void printModifyRecord(String name, LocalDateTime modifiedDate, AttendanceManager attendanceManager) {
+		LocalDateTime pastDate = attendanceManager.getPastRecord(name);
+		String pastDayOfWeek = pastDate.getDayOfWeek().getDisplayName(TextStyle.FULL, Locale.KOREAN);
+		String pastStatus = attendanceManager.getState(pastDayOfWeek, pastDate.getHour(), pastDate.getMinute());
+		System.out.print(String.format(SELECT_FUNCTION_MESSAGE,
+			pastDate.getMonthValue(), pastDate.getDayOfMonth(), pastDayOfWeek
+			, pastDate.getHour(), pastDate.getMinute(), pastStatus));
+
+		System.out.print(" -> ");
+
+		String modifiedDayOfWeek = modifiedDate.getDayOfWeek().getDisplayName(TextStyle.FULL, Locale.KOREAN);
+		String modifiedStatus = attendanceManager.getState(modifiedDayOfWeek, modifiedDate.getHour(), modifiedDate.getMinute());
+		System.out.print(String.format(SELECT_FUNCTION_MESSAGE,
+			modifiedDate.getMonthValue(), modifiedDate.getDayOfMonth(), modifiedDayOfWeek
+			, modifiedDate.getHour(), modifiedDate.getMinute(), modifiedStatus));
+		System.out.println(" 수정 완료!");
+	}
+
 }

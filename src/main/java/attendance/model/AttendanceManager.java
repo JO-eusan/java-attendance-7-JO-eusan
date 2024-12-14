@@ -7,9 +7,11 @@ import java.util.List;
 
 public class AttendanceManager {
 	private HashMap<String, List<LocalDateTime>> records;
+	private HashMap<String, LocalDateTime> pastRecords;
 
 	public AttendanceManager() {
 		this.records = new HashMap<>();
+		this.pastRecords = new HashMap<>();
 	}
 
 	public void addRecord(String name, LocalDateTime date) {
@@ -19,6 +21,18 @@ public class AttendanceManager {
 		}
 		tmp.add(date);
 		records.put(name, tmp);
+	}
+
+	public void modifyRecord(String name, LocalDateTime modifiedDate) {
+		List<LocalDateTime> recordsOfCrew = records.get(name);
+		for(LocalDateTime localDateTime : recordsOfCrew) {
+			if(localDateTime.getDayOfMonth() == modifiedDate.getDayOfMonth()) {
+				recordsOfCrew.remove(localDateTime);
+				pastRecords.put(name, localDateTime);
+			}
+		}
+		recordsOfCrew.add(modifiedDate);
+		records.put(name, recordsOfCrew);
 	}
 
 	public boolean isContain(String name) {
@@ -42,5 +56,9 @@ public class AttendanceManager {
 			return "지각";
 		}
 		return "결석";
+	}
+
+	public LocalDateTime getPastRecord(String name) {
+		return pastRecords.get(name);
 	}
 }
