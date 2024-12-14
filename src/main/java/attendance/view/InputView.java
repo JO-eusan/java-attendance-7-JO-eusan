@@ -8,6 +8,7 @@ import attendance.model.AttendanceManager;
 import camp.nextstep.edu.missionutils.Console;
 
 public class InputView {
+	private static final String ERROR_PREFIX = "[ERROR] ";
 	private static final String SELECT_FUNCTION_MESSAGE = "오늘은 %02d월 %02d일 %s입니다. 기능을 선택해 주세요.";
 	private static final String FUNCTION_1 = "1. 출석 확인";
 	private static final String FUNCTION_2 = "2. 출석 수정";
@@ -83,27 +84,37 @@ public class InputView {
 
 	private void validateFunction(String input) {
 		if(!input.equals("1") && !input.equals("2") && !input.equals("3") && !input.equals("4") && !input.equals("Q")) {
-			throw new IllegalArgumentException("잘못된 형식을 입력하였습니다.");
+			throw new IllegalArgumentException(ERROR_PREFIX + "잘못된 형식을 입력하였습니다.");
 		}
 	}
 
 	private void validateWeekend(LocalDateTime currentTime, String input) {
 		String dayOfWeek = currentTime.getDayOfWeek().getDisplayName(TextStyle.FULL, Locale.KOREAN);
-		if(input.equals("1") && (dayOfWeek.equals("요일") || dayOfWeek.equals("일요일"))) {
-			throw new IllegalArgumentException(String.format(WEEKEND_ERROR_MESSAGE, currentTime.getMonthValue(), currentTime.getDayOfMonth(),dayOfWeek));
+		if(input.equals("1") && (dayOfWeek.equals("토요일") || dayOfWeek.equals("일요일"))) {
+			throw new IllegalArgumentException(ERROR_PREFIX + String.format(WEEKEND_ERROR_MESSAGE, currentTime.getMonthValue(), currentTime.getDayOfMonth(),dayOfWeek));
 		}
 	}
 
 	private void validateNickName(AttendanceManager attendanceManager, String name) {
 		if(!attendanceManager.isContain(name)) {
-			throw new IllegalArgumentException(NICKNAME_ERROR_MESSAGE);
+			throw new IllegalArgumentException(ERROR_PREFIX + NICKNAME_ERROR_MESSAGE);
 		}
 
 	}
 
 	private void validateTimeFormat(String input) {
-		if(!input.matches("(0[1-9]|1[0-9]|2[0-4]):(0[1-9]|[1-5][0-9])")) {
-			throw new IllegalArgumentException(TIME_ERROR_MESSAGE);
+		String[] tokens = input.split(":");
+		int hour = 0;
+		int minute = 0;
+		try {
+			hour = Integer.parseInt(tokens[0]);
+			minute = Integer.parseInt(tokens[1]);
+		} catch (NumberFormatException e) {
+			throw new IllegalArgumentException(ERROR_PREFIX + TIME_ERROR_MESSAGE);
+		}
+
+		if(hour < 0 || hour > 24 || minute < 0 || minute > 59) {
+			throw new IllegalArgumentException(ERROR_PREFIX + TIME_ERROR_MESSAGE);
 		}
 	}
 
@@ -111,11 +122,11 @@ public class InputView {
 		try {
 			Integer.parseInt(input);
 		} catch (NumberFormatException e) {
-			throw new IllegalArgumentException(DAY_ERROR_MESSAGE);
+			throw new IllegalArgumentException(ERROR_PREFIX + DAY_ERROR_MESSAGE);
 		}
 		int day = Integer.parseInt(input);
 		if(day < 1 || day > 31) {
-			throw new IllegalArgumentException(DAY_ERROR_MESSAGE);
+			throw new IllegalArgumentException(ERROR_PREFIX + DAY_ERROR_MESSAGE);
 		}
 	}
 }

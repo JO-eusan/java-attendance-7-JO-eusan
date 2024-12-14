@@ -11,8 +11,6 @@ import attendance.model.Penalty;
 import attendance.model.StatusRecord;
 
 public class OutputView {
-
-	private static final String ERROR_PREFIX = "[ERROR] ";
 	private static final String DATETIME_RECORD_MESSAGE = "%02d월 %02d일 %s %02d:%02d (%s)";
 	private static final String DATE_RECORD_MESSAGE = "%02d월 %02d일 %s --:-- (결석)";
 	private static final String ATTENDANCE_MESSAGE = "출석: %d회";
@@ -20,11 +18,11 @@ public class OutputView {
 	private static final String ABSENCE_MESSAGE = "결석: %d회";
 
 	public void printFileErrorMessage(FileNotFoundException e) {
-		System.out.println(ERROR_PREFIX + e.getMessage());
+		System.out.println(e.getMessage());
 	}
 
 	public void printErrorMessage(IllegalArgumentException e) {
-		System.out.println(ERROR_PREFIX + e.getMessage());
+		System.out.println(e.getMessage());
 	}
 
 	public void printAttendanceRecord(AttendanceManager attendanceManager,LocalDateTime dateTime) {

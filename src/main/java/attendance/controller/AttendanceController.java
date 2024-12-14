@@ -39,14 +39,8 @@ public class AttendanceController {
 	}
 
 	private String selectFunction(LocalDateTime currentTime) {
-		try {
-			String function = inputView.readFunction(currentTime);
-			return function;
-		} catch(IllegalArgumentException e) {
-			outputView.printErrorMessage(e);
-			selectFunction(currentTime);
-		}
-		return "";
+		String function = inputView.readFunction(currentTime);
+		return function;
 	}
 
 	private void executeFunction(LocalDateTime currentTime, int functionNumber) {
@@ -116,56 +110,26 @@ public class AttendanceController {
 	}
 
 	private void checkRiskCrews() {
-		/* enum 이용 */
+
 	}
 
 	private String enterRetryName() {
-		try {
-			return inputView.readRetryName(attendanceManager);
-		} catch (IllegalArgumentException e) {
-			outputView.printErrorMessage(e);
-			enterRetryName();
-		}
-		return "";
+		return inputView.readRetryName(attendanceManager);
 	}
 
 	private String enterName() {
-		try {
-			return inputView.readNickName(attendanceManager);
-		} catch (IllegalArgumentException e) {
-			outputView.printErrorMessage(e);
-			enterName();
-		}
-		return "";
+		return inputView.readNickName(attendanceManager);
 	}
 
 	private String enterTime() {
-		try {
-			return inputView.readTime();
-		} catch (IllegalArgumentException e) {
-			outputView.printErrorMessage(e);
-			enterTime();
-		}
-		return "";
+		return inputView.readTime();
 	}
 
 	private String enterRetryDay() {
-		try {
-			return inputView.readRetryDay();
-		} catch (IllegalArgumentException e) {
-			outputView.printErrorMessage(e);
-			enterTime();
-		}
-		return "";
+		return inputView.readRetryDay();
 	}
 
 	private String enterRetryTime() {
-		try {
-			return inputView.readRetryTime();
-		} catch (IllegalArgumentException e) {
-			outputView.printErrorMessage(e);
-			enterRetryTime();
-		}
-		return "";
+		return inputView.readRetryTime();
 	}
 }
