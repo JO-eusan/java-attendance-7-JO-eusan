@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Set;
 
 public class AttendanceManager {
 	private HashMap<String, List<LocalDateTime>> records;
@@ -12,6 +13,10 @@ public class AttendanceManager {
 	public AttendanceManager() {
 		this.records = new HashMap<>();
 		this.pastRecords = new HashMap<>();
+	}
+
+	public Set<String> getKeys() {
+		return records.keySet();
 	}
 
 	public void addRecord(String name, LocalDateTime date) {
@@ -60,5 +65,9 @@ public class AttendanceManager {
 
 	public LocalDateTime getPastRecord(String name) {
 		return pastRecords.get(name);
+	}
+
+	public List<LocalDateTime> getAllRecord(String name) {
+		return records.get(name);
 	}
 }

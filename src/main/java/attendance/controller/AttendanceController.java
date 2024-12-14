@@ -1,11 +1,16 @@
 package attendance.controller;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.TextStyle;
+import java.util.List;
 import java.util.Locale;
 
 import attendance.model.AttendanceManager;
+import attendance.model.Penalty;
+import attendance.model.StatusManager;
+import attendance.model.StatusRecord;
 import attendance.view.InputView;
 import attendance.view.OutputView;
 import camp.nextstep.edu.missionutils.DateTimes;
@@ -14,6 +19,7 @@ public class AttendanceController {
 	private InputView inputView;
 	private OutputView outputView;
 	private AttendanceManager attendanceManager;
+	private StatusManager statusManager;
 
 	public AttendanceController(AttendanceManager attendanceManager) {
 		this.inputView = new InputView();
@@ -51,9 +57,11 @@ public class AttendanceController {
 			retouchAttendance(currentTime);
 		}
 		if(functionNumber == 3) {
-			checkRecord();
+			this.statusManager = new StatusManager(attendanceManager, currentTime);
+			checkRecord(currentTime);
 		}
 		if(functionNumber == 4) {
+			this.statusManager = new StatusManager(attendanceManager, currentTime);
 			checkRiskCrews();
 		}
 	}
@@ -68,6 +76,57 @@ public class AttendanceController {
 
 		attendanceManager.addRecord(nickname, dateTime);
 		outputView.printAttendanceRecord(attendanceManager, dateTime);
+	}
+
+	private void retouchAttendance(LocalDateTime currentTime) {
+		String name = enterRetryName();
+		int day = Integer.parseInt(enterRetryDay());
+		String[] times = enterRetryTime().split(":");
+		int hour = Integer.parseInt(times[0]);
+		int minute = Integer.parseInt(times[1]);
+
+		LocalDateTime date = LocalDateTime.of(currentTime.getYear(), currentTime.getMonth(), day, hour, minute);
+		attendanceManager.modifyRecord(name, date);
+		outputView.printModifyRecord(name, date, attendanceManager);
+	}
+
+	private void checkRecord(LocalDateTime currentTime) {
+		String nickname = enterName();
+		List<LocalDateTime> allRecords = attendanceManager.getAllRecord(nickname);
+		LocalDate dateCounter = LocalDate.of(currentTime.getYear(), currentTime.getMonth(), 1);
+
+		while(dateCounter.getDayOfMonth() < currentTime.getDayOfMonth() - 1) {
+			String dayOfWeek = dateCounter.getDayOfWeek().getDisplayName(TextStyle.FULL, Locale.KOREAN);
+			if(!dayOfWeek.equals("토요일") && !dayOfWeek.equals("일요일")) {
+				checkRecord(allRecords, dateCounter);
+			}
+			dateCounter = LocalDate.of(currentTime.getYear(), currentTime.getMonth(), dateCounter.getDayOfMonth() + 1);
+		}
+		outputView.printResult(statusManager.findByName(nickname));
+	}
+
+	private void checkRecord(List<LocalDateTime> allRecords, LocalDate current) {
+		for(LocalDateTime record : allRecords) {
+			if(record.toLocalDate().isEqual(current)) {
+				outputView.printAttendanceRecord(attendanceManager, record);
+				return;
+			}
+		}
+		outputView.printAttendanceRecordOfDate(current);
+	}
+
+	private void checkRiskCrews() {
+		/* enum 이용 */
+	}
+
+	private String enterRetryName() {
+		try {
+			return inputView.readRetryName(attendanceManager);
+		} catch (IllegalArgumentException e) {
+			outputView.printErrorMessage(e);
+			enterRetryName();
+		}
+		return "";
 	}
 
 	private String enterName() {
@@ -86,28 +145,6 @@ public class AttendanceController {
 		} catch (IllegalArgumentException e) {
 			outputView.printErrorMessage(e);
 			enterTime();
-		}
-		return "";
-	}
-
-	private void retouchAttendance(LocalDateTime currentTime) {
-		String name = enterRetryName();
-		int day = Integer.parseInt(enterRetryDay());
-		String[] times = enterRetryTime().split(":");
-		int hour = Integer.parseInt(times[0]);
-		int minute = Integer.parseInt(times[1]);
-
-		LocalDateTime date = LocalDateTime.of(currentTime.getYear(), currentTime.getMonth(), day, hour, minute);
-		attendanceManager.modifyRecord(name, date);
-		outputView.printModifyRecord(name, date, attendanceManager);
-	}
-
-	private String enterRetryName() {
-		try {
-			return inputView.readRetryName(attendanceManager);
-		} catch (IllegalArgumentException e) {
-			outputView.printErrorMessage(e);
-			enterRetryName();
 		}
 		return "";
 	}
@@ -131,13 +168,4 @@ public class AttendanceController {
 		}
 		return "";
 	}
-
-	private void checkRecord() {
-
-	}
-
-	private void checkRiskCrews() {
-
-	}
-
 }

@@ -26,6 +26,7 @@ public class InputView {
 	private static final String DAY_ERROR_MESSAGE = "잘못된 날짜(일)입니다.";
 
 	public String readFunction(LocalDateTime currentTime) {
+		System.out.println();
 		System.out.println(String.format(SELECT_FUNCTION_MESSAGE,
 			currentTime.getMonthValue(), currentTime.getDayOfMonth(), currentTime.getDayOfWeek().getDisplayName(TextStyle.FULL, Locale.KOREAN)));
 		System.out.println(FUNCTION_1);
